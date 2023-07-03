@@ -1,0 +1,18 @@
+.pagination {
+	display: flex;
+    justify-content: center;
+	list-style-type: none;
+	.page-item {
+		
+  		padding: 0 5px;
+	
+		&--active {
+			text-decoration: underline;
+		}
+
+		a {
+			text-decoration: none;
+		}
+	}
+	
+}

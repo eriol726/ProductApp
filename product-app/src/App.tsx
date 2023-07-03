@@ -1,96 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.scss';
+import ProductItems from './Pages/product-items/product-items';
+import Pagination from './Pages/product-search/pagination';
+import { useNavigate, Routes, Route, Link } from "react-router-dom";
+import ProductDetail from './Pages/product-details/product-detail';
 
-export interface Products {
-    totalResults: number;
+import ProductSearch from './Pages/product-search/product-search';
+import About from './Pages/about';
+import Home from './Pages/home';
 
-	result: Result[];
-}
 
-export interface Result {
-    id: number;
-
-	name: string;
-
-	featureHighlight: string;
-
-	images: {
-		'240w': string,
-		'480w': string,
-		'640w': string,
-	};
-}
 
 function App() {
 
-	const [products, setProducts] = useState<Products>();
-
-	const [searchFilter, setSearchFilter] = useState("");
-
-	const getApiData = async () => {
-		const headers = {"Access-Control-Allow-Origin": "*"};
-		const productData = await axios.get('http://127.0.0.1:4000/products').then(response => response.data as Products);
-
-		console.log('productData: ', productData);
-
-		setProducts(productData);
-
-	}
-
-	const search = (kewyWord: string) => {
-
-	}
-
-	const getProducts = () => {
-
-	}
-
-	const filteredProducts = products?.result.filter(product => {
-		const res = product.name.toLowerCase().includes(searchFilter.toLowerCase())
-		return res;
-
-	});
-	
-	const handleChange = (e: any) => {
-		setSearchFilter(e.target.value);
-	};
-
-
-
-	useEffect(() => {
-		getApiData();
-	}, []);
-
 	return (
-		<div className="App">
-
-			<input
-                type="text"
-                className=""
-                placeholder="Search..."
-                onChange={handleChange}
-            />
-            <button onClick={getProducts} className="btn btn-primary">
-                Submit
-            </button>
-
-			<div className="cards">
-				{filteredProducts && filteredProducts.map((productItem) => {
-					return (
-						<div key={productItem.id} className="card">
-							<img 
-								src={productItem.images['480w']} 
-								//srcSet={`${productItem.images['640w']} 600w, ${productItem.images['480w']} 900w, ${productItem.images['240w']} 1280w`}
-								//sizes="(max-width: 600wpx) 600wpx, (max-width: 900px) 900px, 1280px"
-								alt="" 
-							/>
-							<div className="header">{productItem.name}</div>
-						</div>
-					);
-				})}
-			</div>
-			
+		<div className='App'>
+			<header>
+				<div className="header-links">
+					<div className='header-links__item'><Link to="/product-search">Products</Link></div>
+					<div className='header-links__item'><Link to="/">Home</Link></div>
+					<div className='header-links__item'><Link to="/about">About</Link></div>
+				</div>
+				
+			</header>
+				<div className="app-content">
+					<Routes>
+						<Route path="/" element={<Home/>}/>
+						<Route path="/about" element={<About/>}/>
+						<Route path="/product-detail" element={<ProductDetail/>}/>
+						<Route path="/product-search/" element={<ProductSearch/>}/>
+						<Route path="/product-search/:id" element={<ProductSearch/>}/>
+					</Routes>
+				</div>
+			<footer></footer>
 		</div>
 	);
 }
