@@ -22,18 +22,11 @@ const ProductDetail : FC = () => {
 	const backUrl = '/product-search';
     return (
         <div>
-			<Link to="/product-search#">Back</Link>
 
-			{/* <Link
-				to={{
-					pathname: "/product-search",
-					search: pageNumber.toString(),
-				}}
-			>Back with param</Link> */}
 
-			<div className="header" onClick={() => navigatePage()}>
-				back again
-			</div>
+			<a className="header" onClick={() => navigatePage()} href='/product-search'>
+				Back
+			</a>
 
 			<Link to={{pathname: `/${1}`, search: `?backUrl=${backUrl}`}} />
 			<div>{productItem.name}</div>
