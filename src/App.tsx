@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <div className="header-links">
+         <div className="header-links">
           <div className="header-links__item">
             <Link to="/product-search">Products</Link>
           </div>
