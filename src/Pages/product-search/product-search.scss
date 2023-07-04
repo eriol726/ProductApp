@@ -1,10 +1,10 @@
 .pagination {
 	display: flex;
-    justify-content: center;
+  justify-content: center;
 	list-style-type: none;
+	padding: 0;
 	.page-item {
-		
-  		padding: 0 5px;
+  	padding: 0 5px;
 	
 		&--active {
 			text-decoration: underline;
@@ -14,5 +14,4 @@
 			text-decoration: none;
 		}
 	}
-	
 }

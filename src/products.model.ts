@@ -5,7 +5,7 @@ export interface Products {
 }
 
 export interface Result {
-    id: number;
+	id: string;
 
 	name: string;
 
@@ -16,4 +16,39 @@ export interface Result {
 		'480w': string,
 		'640w': string,
 	};
+
+	demoProductId: string;
+
+	description: string;
+
+	ecoSystems: [];
+
+	fullProductId: string;
+
+	hasDemo: boolean;
+
+	includedPlugins: string[];
+
+	isHardwareProduct: boolean;
+
+	isInStock: boolean;
+
+	legacyPdfStorageUrl: string;
+
+	notSoldOnWebsite: boolean;
+	price: {
+		campaign: string,
+		normal: string,
+		campaignDecimal: number,
+		normalDecimal: number
+	};
+
+	productionRoles: [];
+	url: string;
+}
+
+export interface LocationState {
+	pageNumber: number
+	searchField: string
+	productItem: Result
 }

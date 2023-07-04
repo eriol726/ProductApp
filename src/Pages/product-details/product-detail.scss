@@ -1,0 +1,32 @@
+
+.detail-container {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	img {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+	.info-text {
+		margin-left: 20px;
+		height: fit-content;
+		display:grid;
+		grid-template-columns: auto auto;
+		grid-column-gap: 20px;
+		grid-row-gap: 20px;
+	}
+
+	.grid-item {
+		display: flex;
+		align-items: start;
+		justify-content: left;
+		text-align: left;
+	}
+}
+
+@media (min-width: 600px) {
+	.detail-container {
+		flex-direction: row;
+	}
+}

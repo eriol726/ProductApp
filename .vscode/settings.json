@@ -2,5 +2,11 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll": true
 	},
-	"eslint.validate": ["javascript", "typscript"]
+	"eslint.validate": [
+		"javascript",
+		"typscript"
+	],
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true
 }
