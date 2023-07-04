@@ -10,6 +10,13 @@ type Error = {
   message: string
 }
 
+/**
+ * Fetching data from server endpoint http://127.0.0.1:4000/products on init
+ * 
+ * Renders 12 products per page
+ * Preserve search result. If user enters the product detail page and go back
+ * to search page. Same items will be displayed as the search result returned. 
+ */
 const ProductSearch: FC = () => {
   const [products, setProducts] = useState<Products>({ result: [], totalResults: 0 });
 
@@ -32,10 +39,18 @@ const ProductSearch: FC = () => {
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
 
+  const sliceProductResult = (_products: Products, _indexOfFirstRecord: number, _indexOfLastRecord: number) => {
+    const currentProducts: Products = {
+      result: _products.result.slice(_indexOfFirstRecord, _indexOfLastRecord),
+      totalResults: _products.result.length,
+    };
+
+    return currentProducts;
+  };
+
   const searchProducts = (_products: Products, _searchField: string): void => {
     const result = _products.result.filter(product => {
-      const res = product.name.toLowerCase().includes(_searchField.toLowerCase());
-      return res;
+      return product.name.toLowerCase().includes(_searchField.toLowerCase());
     });
 
     const indexOfLastRecordSearch = 1 * recordsPerPage;
@@ -43,7 +58,7 @@ const ProductSearch: FC = () => {
 
     const currentProducts: Products = {
       result: result.slice(indexOfFirstRecordSearch, indexOfLastRecordSearch),
-      totalResults: products.result.length,
+      totalResults: result.length,
     };
 
     const nPagesSearch = Math.ceil(result.length / recordsPerPage);
@@ -67,12 +82,7 @@ const ProductSearch: FC = () => {
       } else {
         setNpages(Math.ceil(productData.result.length / recordsPerPage));
 
-        const currentProducts: Products = {
-          result: productData.result.slice(indexOfFirstRecord, indexOfLastRecord),
-          totalResults: productData.result.length,
-        };
-
-        setCurrentRecords(currentProducts);
+        setCurrentRecords(sliceProductResult(productData, indexOfFirstRecord, indexOfLastRecord));
       }
     }
     catch (_error: any) {
@@ -86,18 +96,14 @@ const ProductSearch: FC = () => {
     searchProducts(products, '');
     setSearchField('');
     setCurrentPage(1);
-  };
+  }; 
 
   useEffect(() => {
     void getApiData();
-
   }, []);
 
   useEffect(() => {
-    const currentProducts: Products = {
-      result: products.result.slice(indexOfFirstRecord, indexOfLastRecord),
-      totalResults: products.result.length,
-    };
+    const currentProducts = sliceProductResult(products, indexOfFirstRecord, indexOfLastRecord);
 
     setCurrentRecords(currentProducts);
   }, [currentPage]);
@@ -107,12 +113,11 @@ const ProductSearch: FC = () => {
       <div className="search-container">
         <input
           type="text"
-          className=""
           placeholder="Search..."
           onChange={(e) => setSearchField(e.target.value)}
         />
         <button onClick={() => searchProducts(products, searchField)} className="btn btn-primary">
-          Submit
+          Search
         </button>
         <button onClick={clearSearch} className="btn btn-primary">
           Clear

@@ -7,6 +7,13 @@ import ProductSearch from './Pages/product-search/product-search';
 import About from './Pages/about';
 import Home from './Pages/home';
 
+/**
+ * Main component of the app. Includes: 
+ * A header with a menu.
+ * A content page depending on with route the user has accessed. 
+ * And a footer.
+ * @returns 
+ */
 function App() {
   return (
     <div className="App">

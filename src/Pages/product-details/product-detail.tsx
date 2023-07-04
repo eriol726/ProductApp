@@ -3,7 +3,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LocationState } from '../../products.model';
 import './product-detail.scss';
 
-
+/**
+ * Displays details about clicked product. 
+ * Properties in the grid are fetched from backend
+ */
 const ProductDetail: FC = () => {
 
   const state = useLocation().state as LocationState;
@@ -33,24 +36,23 @@ const ProductDetail: FC = () => {
             alt=""
           />
         </div>
-        <div className='info-text'>
-          <div className='grid-item'><strong>Name:</strong></div>
-          <div className='grid-item'>{productItem.name}</div>
-          <div className='grid-item'><strong>demoProductId:</strong></div>
-          <div className='grid-item'>{productItem.demoProductId}</div>
-          <div className='grid-item'><strong>description:</strong></div>
-          <div className='grid-item'>{productItem.description}</div>
-          <div className='grid-item'><strong>featureHighlight:</strong></div>
-          <div className='grid-item'>{productItem.featureHighlight}</div>
+        <div className='detail-container__info-text'>
+          <div className='detail-container__info-text__grid-item'><strong>Name:</strong></div>
+          <div className='detail-container__info-text__grid-item'>{productItem.name}</div>
+          <div className='detail-container__info-text__grid-item'><strong>Demo Product Id:</strong></div>
+          <div className='detail-container__info-text__grid-item'>{productItem.demoProductId}</div>
+          <div className='detail-container__info-text__grid-item'><strong>Description:</strong></div>
+          <div className='detail-container__info-text__grid-item'>{productItem.description}</div>
+          <div className='detail-container__info-text__grid-item'><strong>Feature Highlight:</strong></div>
+          <div className='detail-container__info-text__grid-item'>{productItem.featureHighlight}</div>
           {Array.isArray(productItem?.includedPlugins) &&
             <>
-              <div className='grid-item'><strong>includedPlugins:</strong></div>
-              <div className='grid-item'>{productItem?.includedPlugins.length && productItem.includedPlugins.map((item) => {
-                return (<>{item}</>);
+              <div className='detail-container__info-text__grid-item'><strong>Included Plugins:</strong></div>
+              <div className='detail-container__info-text__grid-item'>{productItem?.includedPlugins.length && productItem.includedPlugins.map((item, i) => {
+                return (<span key={i}>{item}</span>);
               })}</div>
             </>
           }
-
         </div>
       </div>
     </div>
