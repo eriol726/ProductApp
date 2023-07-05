@@ -4,9 +4,9 @@ import { Products, Result } from '../../products.model';
 import './product-items.scss';
 
 type Props = {
-  products?: Products,
-  currentPage: number,
-  searchField: string,
+	products?: Products,
+	currentPage: number,
+	searchField: string,
 };
 
 /**
@@ -14,33 +14,36 @@ type Props = {
  * @param props 
  */
 export const ProductItems: FC<Props> = (props: Props) => {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  const navigatePage = (productItem: Result) => {
-    navigate('/product-detail', { state: { 
-      productItem: productItem, 
-      pageNumber: props.currentPage, 
-      searchField: props.searchField 
-    } });
-  };
+	const navigatePage = (productItem: Result) => {
+		navigate('/product-detail', {
+			state: {
+				productItem: productItem,
+				pageNumber: props.currentPage,
+				searchField: props.searchField,
+				searchResult: props.products?.result,
+			}
+		});
+	};
 
-  return (
-    <div className="cards">
-      {props.products && props.products.result.map((productItem) => {
-        return (
-          <div key={productItem.id} className="cards__card" onClick={() => navigatePage(productItem)}>
-            <img
-              src={productItem.images['480w']}
-              alt="product image"
-            />
-            <div className="cards__card__header">
-              <p>{productItem.name}</p>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+	return (
+		<div className="cards">
+			{props.products && props.products.result.map((productItem) => {
+				return (
+					<div key={productItem.id} className="cards__card" onClick={() => navigatePage(productItem)}>
+						<img
+							src={productItem.images['480w']}
+							alt="product image"
+						/>
+						<div className="cards__card__header">
+							<p>{productItem.name}</p>
+						</div>
+					</div>
+				);
+			})}
+		</div>
+	);
 };
 
 export default ProductItems;
