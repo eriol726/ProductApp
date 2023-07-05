@@ -39,9 +39,9 @@ module.exports = {
 				"space-infix-ops": "error",
 				"object-curly-spacing": ["error", "always"],
 				"block-spacing": ["error", "always"],
-				"indent": ["error", 2],
+				"indent": ["error", "tab"],
 				"quotes": ["error", "single", { "avoidEscape": true }],
-				"semi": ["error", "always", { "omitLastInOneLineClassBody": true}],
+				"semi": ["error", "always"],
 			},
 			parserOptions: {
 				project: ['./tsconfig.json'], // Specify it only for TypeScript files

@@ -20,11 +20,12 @@ type Error = {
 const ProductSearch: FC = () => {
 	const [products, setProducts] = useState<Products>({ result: [], totalResults: 0 });
 
-	const [currentProductsInit, setCurrentRecords] = useState<Products>({ result: [], totalResults: 0 });
-
 	const [isLoading, setIsLoading] = useState(false);
 
 	const state = useLocation().state as LocationState;
+
+	console.log('state?.searchResult: ', state?.searchResult);
+	const [currentProductsInit, setCurrentRecords] = useState<Products>({ result: state?.searchResult ? state?.searchResult : [], totalResults: 0 });
 
 	const [searchField, setSearchField] = useState(state?.searchField ? state.searchField : '');
 
@@ -77,7 +78,6 @@ const ProductSearch: FC = () => {
 
 			setProducts(productData);
 
-
 			setNpages(Math.ceil(productData.result.length / recordsPerPage));
 
 			setCurrentRecords(sliceProductResult(productData, indexOfFirstRecord, indexOfLastRecord));
@@ -97,19 +97,23 @@ const ProductSearch: FC = () => {
 	};
 
 	useEffect(() => {
-		if (state.searchResult.length) {
-			const indexOfLastRecordSearch = 1 * recordsPerPage;
-			const indexOfFirstRecordSearch = indexOfLastRecordSearch - recordsPerPage;
+		if (state?.searchResult) {
+			// const indexOfLastRecordSearch = 1 * recordsPerPage;
+			// const indexOfFirstRecordSearch = indexOfLastRecordSearch - recordsPerPage;
 
-			const currentProducts: Products = {
-				result: state.searchResult.slice(indexOfFirstRecordSearch, indexOfLastRecordSearch),
-				totalResults: state.searchResult.length,
-			};
+			// const currentProducts: Products = {
+			// 	result: state.searchResult.slice(indexOfFirstRecordSearch, indexOfLastRecordSearch),
+			// 	totalResults: state.searchResult.length,
+			// };
 
-			const nPagesSearch = Math.ceil(state.searchResult.length / recordsPerPage);
+			
+			//const nPagesSearch = Math.ceil(state.searchResult.length / recordsPerPage);
 
-			setNpages(nPagesSearch);
-			setCurrentRecords(currentProducts);
+			//setNpages(nPagesSearch);
+
+			//console.log('currentProducts: ', currentProducts);
+			//setCurrentRecords(currentProducts);
+			//console.log('currentProductsInit: ', currentProductsInit);
 
 		} else {
 			void getApiData();
