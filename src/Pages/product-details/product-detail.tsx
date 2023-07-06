@@ -10,7 +10,7 @@ import './product-detail.scss';
 const ProductDetail: FC = () => {
 
 	const state = useLocation().state as LocationState;
-	const { productItem, pageNumber, searchField, searchResult } = state; // Read values passed on state
+	const { productItem, pageNumber, searchField, currentProducts, products } = state; // Read values passed on state
 
 	const navigate = useNavigate();
 
@@ -19,8 +19,9 @@ const ProductDetail: FC = () => {
 			state: {
 				pageNumber: pageNumber,
 				searchField: searchField,
-				searchResult: searchResult
-			}
+				currentProducts: currentProducts,
+				products: products
+			} as LocationState
 		});
 	};
 

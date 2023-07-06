@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Products, Result } from '../../products.model';
+import { LocationState, Products, Result } from '../../products.model';
 import './product-items.scss';
 
 type Props = {
-	products?: Products,
+	allProducts: Products,
 	currentPage: number,
 	searchField: string,
+	currentProducts: Result[]
 };
 
 /**
@@ -22,14 +23,15 @@ export const ProductItems: FC<Props> = (props: Props) => {
 				productItem: productItem,
 				pageNumber: props.currentPage,
 				searchField: props.searchField,
-				searchResult: props.products?.result,
-			}
+				products: props.allProducts,
+				currentProducts: props.currentProducts
+			} as LocationState
 		});
 	};
 
 	return (
 		<div className="cards">
-			{props.products && props.products.result.map((productItem) => {
+			{props.currentProducts && props.currentProducts.map((productItem) => {
 				return (
 					<div key={productItem.id} className="cards__card" onClick={() => navigatePage(productItem)}>
 						<img

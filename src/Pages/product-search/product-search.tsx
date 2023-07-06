@@ -18,14 +18,20 @@ type Error = {
  * to search page. Same items will be displayed as the search result returned. 
  */
 const ProductSearch: FC = () => {
-	const [products, setProducts] = useState<Products>({ result: [], totalResults: 0 });
 
 	const [isLoading, setIsLoading] = useState(false);
 
 	const state = useLocation().state as LocationState;
 
-	console.log('state?.searchResult: ', state?.searchResult);
-	const [currentProductsInit, setCurrentRecords] = useState<Products>({ result: state?.searchResult ? state?.searchResult : [], totalResults: 0 });
+	const [products, setProducts] = useState<Products>({
+		result: state?.products?.result ? state.products.result : [],
+		totalResults: state?.products?.totalResults ? state.products.totalResults : 0
+	});
+
+	const [currentProductsInit, setCurrentRecords] = useState<Products>({
+		result: state?.currentProducts ? state.currentProducts : [],
+		totalResults: state?.currentProducts ? state.currentProducts.length : 0
+	});
 
 	const [searchField, setSearchField] = useState(state?.searchField ? state.searchField : '');
 
@@ -35,7 +41,7 @@ const ProductSearch: FC = () => {
 
 	const [recordsPerPage] = useState(12);
 
-	const [nPages, setNpages] = useState(0);
+	const [nPages, setNpages] = useState(state?.products?.result ? Math.ceil(state.products.result.length / recordsPerPage) : 0);
 
 	const indexOfLastRecord = currentPage * recordsPerPage;
 	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -91,30 +97,24 @@ const ProductSearch: FC = () => {
 	};
 
 	const clearSearch = () => {
-		searchProducts(products, '');
+		// What is the proper way to clear location state with react-router-dom v6?
+		// navigate(location.pathname, {});
+		// window.history.replaceState({}, '');
+		state.currentProducts = [];
+		state.searchField = '';
+
+		const currentProducts = sliceProductResult(products, indexOfFirstRecord, indexOfLastRecord);
+		setCurrentRecords(currentProducts);
 		setSearchField('');
+		const nPagesSearch = Math.ceil(state.products.result.length / recordsPerPage);
+
+		setNpages(nPagesSearch);
 		setCurrentPage(1);
 	};
 
 	useEffect(() => {
-		if (state?.searchResult) {
-			// const indexOfLastRecordSearch = 1 * recordsPerPage;
-			// const indexOfFirstRecordSearch = indexOfLastRecordSearch - recordsPerPage;
-
-			// const currentProducts: Products = {
-			// 	result: state.searchResult.slice(indexOfFirstRecordSearch, indexOfLastRecordSearch),
-			// 	totalResults: state.searchResult.length,
-			// };
-
-			
-			//const nPagesSearch = Math.ceil(state.searchResult.length / recordsPerPage);
-
-			//setNpages(nPagesSearch);
-
-			//console.log('currentProducts: ', currentProducts);
-			//setCurrentRecords(currentProducts);
-			//console.log('currentProductsInit: ', currentProductsInit);
-
+		if (state?.searchField || state?.currentProducts) {
+			return;
 		} else {
 			void getApiData();
 		}
@@ -122,9 +122,16 @@ const ProductSearch: FC = () => {
 	}, []);
 
 	useEffect(() => {
-		const currentProducts = sliceProductResult(products, indexOfFirstRecord, indexOfLastRecord);
 
-		setCurrentRecords(currentProducts);
+		if (!state?.searchField) {
+			const currentProducts = sliceProductResult(products, indexOfFirstRecord, indexOfLastRecord);
+
+			setCurrentRecords(currentProducts);
+		} else {
+			const nPagesSearch = Math.ceil(state.currentProducts.length / recordsPerPage);
+
+			setNpages(nPagesSearch);
+		}
 	}, [currentPage]);
 
 	return (
@@ -149,7 +156,12 @@ const ProductSearch: FC = () => {
 				setCurrentPage={setCurrentPage}
 			/>
 
-			<ProductItems products={currentProductsInit} currentPage={currentPage} searchField={searchField} />
+			<ProductItems
+				currentProducts={currentProductsInit.result}
+				currentPage={currentPage}
+				searchField={searchField}
+				allProducts={products}
+			/>
 
 			<Pagination
 				nPages={nPages}

@@ -51,5 +51,6 @@ export interface LocationState {
 	pageNumber: number
 	searchField: string
 	productItem: Result
-	searchResult: Result[]
+	currentProducts: Result[]
+	products: Products
 }
