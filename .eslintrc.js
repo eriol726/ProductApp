@@ -20,7 +20,6 @@ module.exports = {
 	overrides: [
 		{
 			files: ['*.ts', '*.tsx', '.prettierrc.js'], // Your TypeScript files extension
-			
 
 			// As mentioned in the comments, you should extend TypeScript plugins here,
 			// instead of extending them outside the `overrides`.
@@ -37,18 +36,18 @@ module.exports = {
 				"prettier/prettier": [
 				"error",
 					{
-							"printWidth": 120,
-							"tabWidth": 2,
-							"useTabs": true,
-							"semi": true,
-							"singleQuote": true,
-							"trailingComma": "es5",
-							"bracketSpacing": true,
-							"jsxSingleQuote": false,
-							"arrowParens": "always",
-							"proseWrap": "never",
-							"htmlWhitespaceSensitivity": "strict",
-							"endOfLine": "lf"
+						"printWidth": 120,
+						"tabWidth": 2,
+						"useTabs": true,
+						"semi": true,
+						"singleQuote": true,
+						"trailingComma": "es5",
+						"bracketSpacing": true,
+						"jsxSingleQuote": false,
+						"arrowParens": "always",
+						"proseWrap": "never",
+						"htmlWhitespaceSensitivity": "strict",
+						"endOfLine": "lf"
 					}
 				],
 				"prefer-template": ["error"],
