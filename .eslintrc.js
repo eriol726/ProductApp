@@ -19,7 +19,8 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: ['*.ts', '*.tsx'], // Your TypeScript files extension
+			files: ['*.ts', '*.tsx', '.prettierrc.js'], // Your TypeScript files extension
+			
 
 			// As mentioned in the comments, you should extend TypeScript plugins here,
 			// instead of extending them outside the `overrides`.
@@ -33,15 +34,29 @@ module.exports = {
 				'plugin:import/typescript',
 			],
 			rules: {
+				"prettier/prettier": [
+				"error",
+					{
+							"printWidth": 120,
+							"tabWidth": 2,
+							"useTabs": true,
+							"semi": true,
+							"singleQuote": true,
+							"trailingComma": "es5",
+							"bracketSpacing": true,
+							"jsxSingleQuote": false,
+							"arrowParens": "always",
+							"proseWrap": "never",
+							"htmlWhitespaceSensitivity": "strict",
+							"endOfLine": "lf"
+					}
+				],
 				"prefer-template": ["error"],
 				"space-in-parens": ["error", "never"],
 				"array-bracket-spacing": ["error", "never"],
 				"space-infix-ops": "error",
 				"object-curly-spacing": ["error", "always"],
 				"block-spacing": ["error", "always"],
-				"indent": ["error", "tab"],
-				"quotes": ["error", "single", { "avoidEscape": true }],
-				"semi": ["error", "always"],
 			},
 			parserOptions: {
 				project: ['./tsconfig.json'], // Specify it only for TypeScript files
@@ -53,7 +68,7 @@ module.exports = {
 			"typescript": {}
 		},
 		react: {
-            version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
-        },
+				version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+		},
 	}
 };

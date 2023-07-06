@@ -1,12 +1,9 @@
-import React, { FC, } from 'react';
+import React, { FC } from 'react';
 
 const About: FC = () => {
-
 	return (
 		<div>
-			<h3>
-				About
-			</h3>
+			<h3>About</h3>
 		</div>
 	);
 };

@@ -7,30 +7,29 @@ import { LocationState, Products } from '../../products.model';
 import './product-search.scss';
 
 type Error = {
-	message: string
-}
+	message: string;
+};
 
 /**
  * Fetching data from server endpoint http://127.0.0.1:4000/products on init
- * 
+ *
  * Renders 12 products per page
  * Preserve search result. If user enters the product detail page and go back
- * to search page. Same items will be displayed as the search result returned. 
+ * to search page. Same items will be displayed as the search result returned.
  */
 const ProductSearch: FC = () => {
-
 	const [isLoading, setIsLoading] = useState(false);
 
 	const state = useLocation().state as LocationState;
 
 	const [products, setProducts] = useState<Products>({
 		result: state?.products?.result ? state.products.result : [],
-		totalResults: state?.products?.totalResults ? state.products.totalResults : 0
+		totalResults: state?.products?.totalResults ? state.products.totalResults : 0,
 	});
 
 	const [currentProductsInit, setCurrentRecords] = useState<Products>({
 		result: state?.currentProducts ? state.currentProducts : [],
-		totalResults: state?.currentProducts ? state.currentProducts.length : 0
+		totalResults: state?.currentProducts ? state.currentProducts.length : 0,
 	});
 
 	const [searchField, setSearchField] = useState(state?.searchField ? state.searchField : '');
@@ -39,12 +38,14 @@ const ProductSearch: FC = () => {
 
 	const [currentPage, setCurrentPage] = useState<number>(state?.pageNumber ? state.pageNumber : 1);
 
-	const [recordsPerPage] = useState(12);
+	const [productsPerPage] = useState(12);
 
-	const [nPages, setNpages] = useState(state?.products?.result ? Math.ceil(state.products.result.length / recordsPerPage) : 0);
+	const [nPages, setNpages] = useState(
+		state?.products?.result ? Math.ceil(state.products.result.length / productsPerPage) : 0
+	);
 
-	const indexOfLastRecord = currentPage * recordsPerPage;
-	const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+	const indexOfLastProduct = currentPage * productsPerPage;
+	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
 	const sliceProductResult = (_products: Products, _indexOfFirstRecord: number, _indexOfLastRecord: number) => {
 		const currentProducts: Products = {
@@ -56,19 +57,19 @@ const ProductSearch: FC = () => {
 	};
 
 	const searchProducts = (_products: Products, _searchField: string): void => {
-		const result = _products.result.filter(product => {
+		const result = _products.result.filter((product) => {
 			return product.name.toLowerCase().includes(_searchField.toLowerCase());
 		});
 
-		const indexOfLastRecordSearch = 1 * recordsPerPage;
-		const indexOfFirstRecordSearch = indexOfLastRecordSearch - recordsPerPage;
+		const indexOfLastRecordSearch = 1 * productsPerPage;
+		const indexOfFirstRecordSearch = indexOfLastRecordSearch - productsPerPage;
 
 		const currentProducts: Products = {
 			result: result.slice(indexOfFirstRecordSearch, indexOfLastRecordSearch),
 			totalResults: result.length,
 		};
 
-		const nPagesSearch = Math.ceil(result.length / recordsPerPage);
+		const nPagesSearch = Math.ceil(result.length / productsPerPage);
 
 		setNpages(nPagesSearch);
 		setCurrentRecords(currentProducts);
@@ -80,16 +81,14 @@ const ProductSearch: FC = () => {
 
 		try {
 			const response = await fetch('http://127.0.0.1:4000/products');
-			const productData = await response.json() as Products;
+			const productData = (await response.json()) as Products;
 
 			setProducts(productData);
 
-			setNpages(Math.ceil(productData.result.length / recordsPerPage));
+			setNpages(Math.ceil(productData.result.length / productsPerPage));
 
-			setCurrentRecords(sliceProductResult(productData, indexOfFirstRecord, indexOfLastRecord));
-
-		}
-		catch (_error: any) {
+			setCurrentRecords(sliceProductResult(productData, indexOfFirstProduct, indexOfLastProduct));
+		} catch (_error: any) {
 			setError({ message: (_error as Error).message });
 		} finally {
 			setIsLoading(false);
@@ -103,10 +102,10 @@ const ProductSearch: FC = () => {
 		state.currentProducts = [];
 		state.searchField = '';
 
-		const currentProducts = sliceProductResult(products, indexOfFirstRecord, indexOfLastRecord);
+		const currentProducts = sliceProductResult(products, indexOfFirstProduct, indexOfLastProduct);
 		setCurrentRecords(currentProducts);
 		setSearchField('');
-		const nPagesSearch = Math.ceil(state.products.result.length / recordsPerPage);
+		const nPagesSearch = Math.ceil(state.products.result.length / productsPerPage);
 
 		setNpages(nPagesSearch);
 		setCurrentPage(1);
@@ -118,30 +117,24 @@ const ProductSearch: FC = () => {
 		} else {
 			void getApiData();
 		}
-
 	}, []);
 
 	useEffect(() => {
-
 		if (!state?.searchField) {
-			const currentProducts = sliceProductResult(products, indexOfFirstRecord, indexOfLastRecord);
+			const currentProducts = sliceProductResult(products, indexOfFirstProduct, indexOfLastProduct);
 
 			setCurrentRecords(currentProducts);
 		} else {
-			const nPagesSearch = Math.ceil(state.currentProducts.length / recordsPerPage);
+			const nPagesSearch = Math.ceil(state.currentProducts.length / productsPerPage);
 
 			setNpages(nPagesSearch);
 		}
 	}, [currentPage]);
 
 	return (
-		<div >
+		<div>
 			<div className="search-container">
-				<input
-					type="text"
-					placeholder="Search..."
-					onChange={(e) => setSearchField(e.target.value)}
-				/>
+				<input type="text" placeholder="Search..." onChange={(e) => setSearchField(e.target.value)} />
 				<button onClick={() => searchProducts(products, searchField)} className="btn btn-primary">
 					Search
 				</button>
@@ -150,11 +143,7 @@ const ProductSearch: FC = () => {
 				</button>
 			</div>
 
-			<Pagination
-				nPages={nPages}
-				currentPage={currentPage}
-				setCurrentPage={setCurrentPage}
-			/>
+			<Pagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
 			<ProductItems
 				currentProducts={currentProductsInit.result}
@@ -163,11 +152,7 @@ const ProductSearch: FC = () => {
 				allProducts={products}
 			/>
 
-			<Pagination
-				nPages={nPages}
-				currentPage={currentPage}
-				setCurrentPage={setCurrentPage}
-			/>
+			<Pagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
 			{isLoading && <p>Loading...</p>}
 			{error && <p>Error: {error.message}</p>}

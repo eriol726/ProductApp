@@ -6,17 +6,13 @@ export interface Products {
 
 export interface Result {
 	id: string;
-
 	name: string;
-
 	featureHighlight: string;
-
 	images: {
-		'240w': string,
-		'480w': string,
-		'640w': string,
+		'240w': string;
+		'480w': string;
+		'640w': string;
 	};
-
 	demoProductId: string;
 
 	description: string;
@@ -37,10 +33,10 @@ export interface Result {
 
 	notSoldOnWebsite: boolean;
 	price: {
-		campaign: string,
-		normal: string,
-		campaignDecimal: number,
-		normalDecimal: number
+		campaign: string;
+		normal: string;
+		campaignDecimal: number;
+		normalDecimal: number;
 	};
 
 	productionRoles: [];
@@ -48,9 +44,9 @@ export interface Result {
 }
 
 export interface LocationState {
-	pageNumber: number
-	searchField: string
-	productItem: Result
-	currentProducts: Result[]
-	products: Products
+	pageNumber: number;
+	searchField: string;
+	productItem: Result;
+	currentProducts: Result[];
+	products: Products;
 }
