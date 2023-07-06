@@ -57,6 +57,16 @@ module.exports = {
 				"space-infix-ops": "error",
 				"object-curly-spacing": ["error", "always"],
 				"block-spacing": ["error", "always"],
+				"import/extensions": [
+					"error",
+					"ignorePackages",
+					{
+						"js": "never",
+						"jsx": "never",
+						"ts": "never",
+						"tsx": "never"
+					}
+			 ]
 			},
 			parserOptions: {
 				project: ['./tsconfig.json'], // Specify it only for TypeScript files

@@ -99,16 +99,19 @@ const ProductSearch: FC = () => {
 		// What is the proper way to clear location state with react-router-dom v6?
 		// navigate(location.pathname, {});
 		// window.history.replaceState({}, '');
-		state.currentProducts = [];
-		state.searchField = '';
 
-		const currentProducts = sliceProductResult(products, indexOfFirstProduct, indexOfLastProduct);
-		setCurrentRecords(currentProducts);
-		setSearchField('');
-		const nPagesSearch = Math.ceil(state.products.result.length / productsPerPage);
+		// If products has not been fetched yet
+		if (products.result.length) {
+			state.currentProducts = [];
+			state.searchField = '';
+			const currentProducts = sliceProductResult(products, indexOfFirstProduct, indexOfLastProduct);
+			setCurrentRecords(currentProducts);
+			setSearchField('');
+			const nPagesSearch = Math.ceil(state.products.result.length / productsPerPage);
 
-		setNpages(nPagesSearch);
-		setCurrentPage(1);
+			setNpages(nPagesSearch);
+			setCurrentPage(1);
+		}
 	};
 
 	useEffect(() => {
